@@ -21,7 +21,7 @@ function getUserID(){
       });
 }
 
-function newUser(){
+async function newUser(){
     data = {};
     
     fetch("./api/new-user",{
@@ -34,7 +34,7 @@ function newUser(){
         });
 }
 
-function getSiteStats(domain, url){
+async function getSiteStats(domain, url){
     data = {domain : domain, url : url};
     fetch("./api/site-stats", {
         method : "GET",
@@ -46,6 +46,31 @@ function getSiteStats(domain, url){
 
     });
 }
+
+function sendRating(UID, rating, domain, url){
+    data = {domain: domain, url: url, UID : UID, rating: rating};
+    fetch("./api/rating", {
+        method : "POST",
+        headers: {'Content-Type': 'application/json'},
+        body = JSON.stringify(data)
+    }).then(res => {
+       data = JSON.parse(res);
+       console.log("sendRatingStatus: " + res.status);
+    });
+}
+
+function sendComment(UID, comment, domain, url){
+    data = {};
+    fetch("./api/comment", {
+        method : "POST",
+        headers: {'Content-Type': 'application/json'},
+        body = JSON.stringify(data)
+    }).then(res => {
+        data = JSON.parse(res);
+        console.log("sendRatingStatus: " + res.status);
+    });
+}
+
 /*
 function callbackClosure(callback){
     return function(){
