@@ -4,24 +4,24 @@ async function getURL(){ // Return URL of current page
     return tab.url;
 }
 
-function setUserID(NewUID){
-   chrome.storage.sync.set({["UID"] : NewUID.toString()}, function(){
+function setUserID(NewUID){ //Sets the user ID to the value passed in. 
+    chrome.storage.sync.set({["UID"] : NewUID.toString()}, function(){
        console.log("Saved")
    });
 }
 
-function getUserID(){
+function getUserID(){ // Currently sets title to saved user ID. 
     var ret = "";
     chrome.storage.sync.get("UID", function(items) {
         console.log(items);
         //console.log('Value currently is ' + result.key);
         
-        document.getElementById('title').innerText = (items.UID);
+        document.getElementById('UID').innerText = (items.UID);
 
       });
 }
 
-async function newUser(){
+function newUser(){ //Function to get new uesr ID. 
     data = {};
     
     fetch("./api/new-user",{
@@ -31,10 +31,11 @@ async function newUser(){
             data = JSON.parse(res);
             setUserID(data.id);
             console.log("User ID set to: "  + data.id);
+            document.getElementById('UID').innerText = data.id;
         });
 }
 
-async function getSiteStats(domain, url){
+async function getSiteStats(domain, url){ // Gets specified domain and url site stats from backend and populates the page
     data = {domain : domain, url : url};
     fetch("./api/site-stats", {
         method : "GET",
@@ -47,7 +48,7 @@ async function getSiteStats(domain, url){
     });
 }
 
-function sendRating(UID, rating, domain, url){
+function sendRating(UID, rating, domain, url){ //Sends the user's rating to the backend based on the specific domain and url page.  
     data = {domain: domain, url: url, UID : UID, rating: rating};
     fetch("./api/rating", {
         method : "POST",
@@ -59,7 +60,7 @@ function sendRating(UID, rating, domain, url){
     });
 }
 
-function sendComment(UID, comment, domain, url){
+function sendComment(UID, comment, domain, url){ //Sends the user's comment to the backend based on the specific domain and url. 
     data = {};
     fetch("./api/comment", {
         method : "POST",
@@ -71,69 +72,8 @@ function sendComment(UID, comment, domain, url){
     });
 }
 
-/*
-function callbackClosure(callback){
-    return function(){
-        return callback();
-    }
-}
-*/
 
-
-
-
-
-
-document.addEventListener('DOMContentLoaded', async function () {
-    
-    
-    let url = await getURL();
-    
-    
-    var upVote = document.getElementById('upvote');
-    //chrome.storage.sync.clear(); //Delete when done testing.
-
-
-    upVote.addEventListener('click', function () {
-        document.getElementById('title').innerText = ("URL is: " + url);
-        populatePage(testJSON);
-        setUserID(5);
-
-
-    }, false);
-
-    var downVote = document.getElementById('downvote');
-    downVote.addEventListener('click', function (){
-        ID = getUserID();
-        document.getElementById('title').innerText = (ID);
-
-    }, false);
-}, false);
-
-
-
-let testJSON = JSON.stringify({
-    siteRating: 54,
-    pageRating: 45,
-    comments: [
-        {
-            UUID: 'ID1',
-            comment: 'some text here'
-        },
-        {
-            UUID: 'ID2',
-            comment: 'some more text'
-        },
-        {
-            UUID: 'ID3',
-            comment: 'this site sucks'
-        }
-    ]
-});
-
-//testJSON = JSON.stringify({siteRating : 54, pageRating : 45});
-
-function populatePage(json) {
+function populatePage(json) { //Populates page based on the JSON string passed to it. 
     let parsed = JSON.parse(json);
     
     document.getElementById("siteRating").innerText = parsed.siteRating;
@@ -175,3 +115,75 @@ function populatePage(json) {
 
 
 }
+
+let testJSON = JSON.stringify({ // Test JSON String for populatePage
+    siteRating: 54,
+    pageRating: 45,
+    comments: [
+        {
+            UUID: 'ID1',
+            comment: 'some text here'
+        },
+        {
+            UUID: 'ID2',
+            comment: 'some more text'
+        },
+        {
+            UUID: 'ID3',
+            comment: 'this site sucks'
+        }
+    ]
+});
+
+
+
+document.addEventListener('DOMContentLoaded', async function () {
+    
+    let url = await getURL();
+    let domain = "temp" //Get domain name somehow
+    getUserID();
+    let uid =  document.getElementById('UID').innerText;
+    
+    if(uid == "Undefined"){
+        newUser();
+        uid =  document.getElementById('UID').innerText;
+    }
+
+    getSiteStats(domain,url); //Updates page 
+
+    
+    var upVote = document.getElementById('upvote');
+
+    var downVote = document.getElementById('downvote');
+
+    var commentSubmit = document.getElementById('submitComment');
+
+
+    
+    
+    upVote.addEventListener('click', function () { // 
+        sendRating(uid, 1,domain,url);
+        getSiteStats();
+        // setUserID(5);
+    }, false);
+
+    downVote.addEventListener('click', function (){
+        sendRating(uid, 0,domain,url);
+        getSiteStats();
+
+    }, false);
+
+    commentSubmit.addEventListener('click', function(){
+        let commentText = document.getElementById("comment").innerText;
+        sendComment(uid,commentText, domain, url);
+        getSiteStats();
+        
+    }, false);
+
+
+}, false);
+
+
+
+
+
