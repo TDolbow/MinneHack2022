@@ -4,6 +4,31 @@ async function getURL(){ // Return URL of current page
     return tab.url;
 }
 
+function setUserID(NewUID){
+   chrome.storage.sync.set({["UID"] : NewUID.toString()}, function(){
+       console.log("Saved")
+   });
+}
+
+function getUserID(){
+    var ret = "";
+    chrome.storage.sync.get("UID", function(items) {
+        console.log(items);
+        //console.log('Value currently is ' + result.key);
+        
+        document.getElementById('title').innerText = (items.UID);
+
+      });
+}
+
+/*
+function callbackClosure(callback){
+    return function(){
+        return callback();
+    }
+}
+*/
+
 
 
 
@@ -16,15 +41,21 @@ document.addEventListener('DOMContentLoaded', async function () {
     
     
     var upVote = document.getElementById('upvote');
+    //chrome.storage.sync.clear(); //Delete when done testing.
+
+
     upVote.addEventListener('click', function () {
         document.getElementById('title').innerText = ("URL is: " + url);
         populatePage(testJSON);
+        setUserID(5);
 
 
     }, false);
 
     var downVote = document.getElementById('downvote');
     downVote.addEventListener('click', function (){
+        ID = getUserID();
+        document.getElementById('title').innerText = (ID);
 
     }, false);
 }, false);
