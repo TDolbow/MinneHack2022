@@ -4,8 +4,6 @@ USE siterating;
 
 CREATE USER 'hackathon'@'localhost' IDENTIFIED BY 'pineapples';
 
-FLUSH PRIVILEGES;
-
 GRANT ALL PRIVILEGES ON siterating.* TO 'hackathon'@'localhost';
 
 FLUSH PRIVILEGES;
