@@ -1,9 +1,30 @@
-document.addEventListener('DOMContentLoaded', function () {
-    var checkPageButton = document.getElementById('upvote');
-    checkPageButton.addEventListener('click', function () {
-        document.getElementById('title').innerText = "Button was clicked";
+async function getURL(){ // Return URL of current page
+    let queryOptions = { active: true, currentWindow: true };
+    let [tab] = await chrome.tabs.query(queryOptions);
+    return tab.url;
+}
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', async function () {
+    
+    
+    let url = await getURL();
+    
+    
+    var upVote = document.getElementById('upvote');
+    upVote.addEventListener('click', function () {
+        document.getElementById('title').innerText = ("URL is: " + url);
         populatePage(testJSON);
 
+
+    }, false);
+
+    var downVote = document.getElementById('downvote');
+    downVote.addEventListener('click', function (){
 
     }, false);
 }, false);
@@ -62,6 +83,7 @@ function populatePage(json) {
 
     }
 
+    
 
 
 
