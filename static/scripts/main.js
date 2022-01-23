@@ -35,7 +35,10 @@ function populatePage(json) {
     let parsed = JSON.parse(json);
     
     document.getElementById("siteRating").innerText = parsed.siteRating;
+    document.getElementById("siteRating").value = parsed.siteRating;
+
     document.getElementById("pageRating").innerText =  parsed.pageRating;
+    document.getElementById("pageRating").value = parsed.pageRating;
     
     
     commentArr = parsed.comments;
