@@ -1,4 +1,4 @@
-import { Application, HttpError, send } from "https://deno.land/x/oak/mod.ts";
+import { Application, Router, HttpError, send } from "https://deno.land/x/oak/mod.ts";
 import { Client } from "https://deno.land/x/mysql/mod.ts";
 import {
     bold,
@@ -19,10 +19,24 @@ const client = await new Client().connect({
   password: dbCreds.password,
 });
 
-const app = new Application();
+const router = new Router();
+router
+    .get("/api/new-user", async (context) => {
+        await client.execute(`INSERT INTO Users() VALUES();`);
+        let data = await client.query(`SELECT UUID FROM Users ORDER BY UUID DESC LIMIT 1;`);
+        context.response.body = data;
+    });
+    //.get("/api/site-stats")
+    //.post("/api/rating")
+    //.post("/api/comment");
 
-app.addEventListened("listen", ({ hostname, port }) => {
-    console.log(bold(`Server listening on http://${hostname}:${port}. `));
+const app = new Application();
+app.use(router.routes());
+app.use(router.allowedMethods());
+
+app.addEventListener("listen", () => {
+    console.log(bold(`Server listening...`));
 });
 
-await app.listen({ hostname: "localhost", port: 8000 });
+await app.listen({ port: 8000 });
+await client.close();
