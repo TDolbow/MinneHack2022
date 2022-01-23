@@ -25,10 +25,36 @@ router
         await client.execute(`INSERT INTO Users() VALUES();`);
         let data = await client.query(`SELECT UUID FROM Users ORDER BY UUID DESC LIMIT 1;`);
         context.response.body = data;
+    })
+    .get("/api/site-stats", async (ctx) => {
+        let data = {
+            siteRating: 75,
+            pageRating: 25,
+            comments: [
+                {
+                    UUID: 2,
+                    comment: 'Great page! Very user friendly!'
+                },
+                {
+                    UUID: 4,
+                    comment: 'Felt uneasy about this sites credit card processing, I would steer clear :('
+                }
+            ]
+        };
+        ctx.response.body = data;
+    })
+    .get("/api/rating", async (ctx) => {
+        let data = {
+            status: 'success'
+        };
+        ctx.response.body = data;
+    })
+    .get("/api/comment", async (ctx) => {
+        let data = {
+            status: 'success'
+        };
+        ctx.response.body = data;
     });
-    //.get("/api/site-stats")
-    //.post("/api/rating")
-    //.post("/api/comment");
 
 const app = new Application();
 app.use(router.routes());
