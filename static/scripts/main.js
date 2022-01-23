@@ -24,7 +24,7 @@ function getUserID(){ // Currently sets title to saved user ID.
 function newUser(){ //Function to get new uesr ID. 
     data = {};
     
-    fetch("./api/new-user",{
+    fetch("192.168.64.3:8000/api/new-user",{
         method : "GET",
         headers: {'Content-Type': 'application/json'}
         }).then(res => {
@@ -37,7 +37,7 @@ function newUser(){ //Function to get new uesr ID.
 
 async function getSiteStats(domain, url){ // Gets specified domain and url site stats from backend and populates the page
     data = {domain : domain, url : url};
-    fetch("./api/site-stats", {
+    fetch("192.168.64.3:8000/api/site-stats", {
         method : "GET",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
@@ -50,7 +50,7 @@ async function getSiteStats(domain, url){ // Gets specified domain and url site 
 
 function sendRating(UID, rating, domain, url){ //Sends the user's rating to the backend based on the specific domain and url page.  
     data = {domain: domain, url: url, UID : UID, rating: rating};
-    fetch("./api/rating", {
+    fetch("192.168.64.3:8000/api/rating", {
         method : "POST",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
@@ -62,7 +62,7 @@ function sendRating(UID, rating, domain, url){ //Sends the user's rating to the 
 
 function sendComment(UID, comment, domain, url){ //Sends the user's comment to the backend based on the specific domain and url. 
     data = {};
-    fetch("./api/comment", {
+    fetch("192.168.64.3:8000/api/comment", {
         method : "POST",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
