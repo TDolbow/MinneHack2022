@@ -28,7 +28,7 @@ function newUser(){ //Function to get new uesr ID.
         method : "GET",
         headers: {'Content-Type': 'application/json'}
         }).then(res => {
-            data = JSON.parse(res);
+            data = JSON.parse(res)[0];
             setUserID(data.id);
             console.log("User ID set to: "  + data.id);
             document.getElementById('UID').innerText = data.id;
@@ -55,7 +55,7 @@ function sendRating(UID, rating, domain, url){ //Sends the user's rating to the 
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
     }).then(res => {
-       data = JSON.parse(res);
+       data = JSON.parse(res)[0];
        console.log("sendRatingStatus: " + res.status);
     });
 }
@@ -67,14 +67,14 @@ function sendComment(UID, comment, domain, url){ //Sends the user's comment to t
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
     }).then(res => {
-        data = JSON.parse(res);
+        data = JSON.parse(res)[0];
         console.log("sendRatingStatus: " + res.status);
     });
 }
 
 
 function populatePage(json) { //Populates page based on the JSON string passed to it. 
-    let parsed = JSON.parse(json);
+    let parsed = JSON.parse(json)[0];
     
     document.getElementById("siteRating").innerText = parsed.siteRating;
     document.getElementById("siteRating").value = parsed.siteRating;
