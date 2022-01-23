@@ -27,6 +27,7 @@ POST "/api/rating"
         - domain
         - path
         - rating - a 1 or 0 representing like or dislike respectively
+        - UID
 {
     status: 'success'
 }
@@ -36,6 +37,7 @@ POST "/api/comment"
         - domain
         - path
         - comment
+        - UID
 
 {
     status: 'success'
