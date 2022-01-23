@@ -21,6 +21,31 @@ function getUserID(){
       });
 }
 
+function newUser(){
+    data = {};
+    
+    fetch("./api/new-user",{
+        method : "GET",
+        headers: {'Content-Type': 'application/json'}
+        }).then(res => {
+            data = JSON.parse(res);
+            setUserID(data.id);
+            console.log("User ID set to: "  + data.id);
+        });
+}
+
+function getSiteStats(domain, url){
+    data = {domain : domain, url : url};
+    fetch("./api/site-stats", {
+        method : "GET",
+        headers: {'Content-Type': 'application/json'},
+        body = JSON.stringify(data)
+    }).then(res => {
+        populatePage(res) //Populates page with results. 
+        
+
+    });
+}
 /*
 function callbackClosure(callback){
     return function(){
