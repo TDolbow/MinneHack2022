@@ -39,7 +39,7 @@ async function getSiteStats(domain, url){
     fetch("./api/site-stats", {
         method : "GET",
         headers: {'Content-Type': 'application/json'},
-        body = JSON.stringify(data)
+        body: JSON.stringify(data)
     }).then(res => {
         populatePage(res) //Populates page with results. 
         
@@ -52,7 +52,7 @@ function sendRating(UID, rating, domain, url){
     fetch("./api/rating", {
         method : "POST",
         headers: {'Content-Type': 'application/json'},
-        body = JSON.stringify(data)
+        body: JSON.stringify(data)
     }).then(res => {
        data = JSON.parse(res);
        console.log("sendRatingStatus: " + res.status);
@@ -64,7 +64,7 @@ function sendComment(UID, comment, domain, url){
     fetch("./api/comment", {
         method : "POST",
         headers: {'Content-Type': 'application/json'},
-        body = JSON.stringify(data)
+        body: JSON.stringify(data)
     }).then(res => {
         data = JSON.parse(res);
         console.log("sendRatingStatus: " + res.status);
