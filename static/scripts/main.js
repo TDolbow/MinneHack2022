@@ -21,6 +21,21 @@ function getUserID(){ // Currently sets title to saved user ID.
       });
 }
 
+let data = {
+    siteRating: 75,
+    pageRating: 25,
+    comments: [
+        {
+            UUID: 2,
+            comment: 'Great page! Very user friendly!'
+        },
+        {
+            UUID: 4,
+            comment: 'Felt uneasy about this sites credit card processing, I would steer clear :('
+        }
+    ]
+};
+
 function newUser(){ //Function to get new uesr ID. 
     data = {};
     
@@ -74,7 +89,7 @@ function sendComment(UID, comment, domain, url){ //Sends the user's comment to t
 
 
 function populatePage(json) { //Populates page based on the JSON string passed to it. 
-    let parsed = JSON.parse(json)[0];
+    let parsed = data
     
     document.getElementById("siteRating").innerText = parsed.siteRating;
     document.getElementById("siteRating").value = parsed.siteRating;
